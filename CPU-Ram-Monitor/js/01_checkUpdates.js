@@ -2,36 +2,41 @@
  * Check github updates 
  */
 function checkUpdates() {
-	var getGithub = new XMLHttpRequest(),
-	    jsonResponse,
-	    prev_pushed_at,
-	    pushed_at;
+	var getGithub 	= new XMLHttpRequest(),
+		getLocal 	= new XMLHttpRequest(),
+		xmlGithub,
+		xmlLocal,
+		versionGithub,
+		versionLocal;
 
-	getGithub.open("GET", "https://api.github.com/repos/0ather/AFX-Script_ConnectLayers", false);
+	getGithub.open("GET", "https://raw.githubusercontent.com/0ather/AFX-CpuRamMonitor/master/CPU-Ram-Monitor/CSXS/manifest.xml", false);
+	getLocal.open("GET", "./CSXS/manifest.xml", false);
 
 	getGithub.onreadystatechange = function() {
-	    jsonResponse = JSON.parse(getGithub.responseText);
-	    pushed_at = jsonResponse.pushed_at;
-	}
+		if ( getGithub.readyState == 4 ) {
+		    xmlGithub = getGithub.responseText;
+		    var startIndex = xmlGithub.indexOf("ExtensionBundleVersion");
 
-	getGithub.send();
-
-	console.log(localStorage);
-
-	if (localStorage.length !== 0) {
-		// Value found in localStorage
-		// Get it (prev value) and compare with new
-		prev_pushed_at = localStorage.getItem("gitHub-pushed_at");
-
-		if ( prev_pushed_at == pushed_at ) {
-			// No updates
-			console.log("No updates");
-		} else {
-			// A new update available
-			console.log("A new update is available!");
+		    versionGithub = xmlGithub.substring(startIndex+24, startIndex+29);
 		}
 	}
 
-	// Store pushed_at value in localStorage
-	localStorage.setItem("gitHub-pushed_at", pushed_at);
+	getLocal.onreadystatechange = function() {
+		if ( getLocal.readyState == 4 ) {
+			xmlLocal = getLocal.responseText;
+			var startIndex = xmlGithub.indexOf("ExtensionBundleVersion");
+
+			versionLocal = xmlLocal.substring(startIndex+24, startIndex+29);
+		}
+	}
+
+	getGithub.send();
+	getLocal.send();
+
+	if ( versionLocal !== versionGithub ) {
+		console.log("A new update is available!");
+		document.getElementById("updates").innerHTML = "A new update is available! <a onclick=\"window.cep.util.openURLInDefaultBrowser('https://github.com/0ather/AFX-CpuRamMonitor')\" href=\"#\">Check on Github.</a>";
+	} else {
+		console.log("No updates");
+	}
 }
