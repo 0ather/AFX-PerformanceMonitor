@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="5.0" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleVersion="1.0.1"
+<ExtensionManifest Version="5.0" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleVersion="1.1.0"
 		ExtensionBundleName="CPU-RAM Monitor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.cpurammonitor.ext" Version="1.0" />
+		<Extension Id="com.cpurammonitor.ext" Version="1.1.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>

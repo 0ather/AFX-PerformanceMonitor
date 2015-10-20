@@ -1,15 +1,35 @@
-/*Your styles*/
-
- body {
+/**
+ * General styles
+ */
+body {
     margin: 10px;
+    overflow-y: hidden;
 }
 
+body.active {
+    overflow-y: scroll;
+}
 
 #content {
     margin-right:auto;
     margin-left:auto;
     vertical-align:middle;
     width:100%;
+    opacity: 0;
+}
+
+.classic-button {
+    padding: 4px 12px;
+    font-size: 10px;
+    border: 0;
+    background-color: #515151;
+    font-family: sans-serif;
+    color: inherit;
+    cursor: default;
+    border-radius: 3px;
+    -webkit-transition: background-color 0.2s;
+        -ms-transition: background-color 0.2s;
+            transition: background-color 0.2s;
 }
 
 /*
@@ -31,39 +51,67 @@ by the settings of the CC application
 /*background color and font*/
 .hostElt{}
 
-
-.hostButton{
-    border:1px solid;
-    border-radius:2px;
-    height:20px;
-    vertical-align:bottom;
-    font-family:inherit;
-    color:inherit;
-    font-size:inherit;
+/**
+ * CPU - Memory - Cache Disk
+ */
+#cpu-container, #memory-container, #disk-cache-container {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 5px;
 }
 
 cpu, memory {
-    width: 100%;
-    max-width: 200px;
-    height: 20px;
     background-color: #363636;
     display: -webkit-flex;
     -webkit-justify-content: space-between;
 }
 
-step {
-    width: 10px;
+disk-cache, step {
+    display: block;
     height: 20px;
 }
 
-.step-disabled {
+step {
+    width: 10px;
+}
+
+span {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.step-disabled, #disk-cache1 {
     background-color: #414141;
 }
 
-.step-enabled {
+.step-enabled, #disk-cache2 {
     background-color: #00A4D0;
 }
 
+#disk-cache2 {
+    margin-top: -20px;
+}
+
+#disk-cache-button-1 {
+    display: block;
+    width: 100%;
+    height: 20px;
+    margin-top: -20px;
+    border-radius: 0px;
+    opacity: 0;
+    background-color: rgba(81, 81, 81, 0.7);
+    -webkit-transition: opacity 0.3s;
+        -ms-transition: opacity 0.3s;
+            transition: opacity 0.3s;
+}
+
+#disk-cache-button-1:hover {
+    opacity: 1;
+}
+
+/**
+ * Updates
+ */
 #updates {
     margin-top: 20px;
     font-size: 10px;
@@ -75,3 +123,123 @@ step {
     border-bottom: dotted 1px;
     cursor: pointer;
 }
+
+/**
+ * Advanced Settings
+ */
+#advanced-settings {
+    margin-top: 20px;
+    cursor: pointer;
+}
+#advanced-settings:hover {
+    background-color: #414141;
+}
+
+cores, refresh, settings span {
+    display: block;
+}
+
+settings {
+    display: block;
+    opacity: 0;
+    margin-top: 10px;
+    border: 1px solid #313131;
+    padding: 13px;
+    -webkit-transition: opacity 0.5s;
+        -ms-transition: opacity 0.5s;
+            transition: opacity 0.5s;
+}
+
+settings span {
+    margin-bottom: 10px;
+    font-size: 10px;
+    cursor: default;
+}
+
+settings.active {
+    opacity: 1;
+}
+
+settings.active .button-disabled {
+    cursor: pointer;
+}
+
+.settings-button {
+    margin-bottom: 10px;
+}
+
+.button-disabled {
+    background-color: #212121;
+}
+
+.button-enabled {
+    background-color: #414141;
+}
+
+.button-disabled:hover {
+    background-color: #313131;
+}
+
+#disk-cache-button-1 {
+    cursor: pointer;
+}
+
+/**
+ * Custom Checkbox 
+ */
+
+/* hide default checkbox */
+.checkbox-custom {
+    opacity: 0;
+    position: absolute;
+}
+/* position label */
+.checkbox-custom-label {
+    position: relative;
+}
+/* add cursor pointer */
+.checkbox-custom, .checkbox-custom-label {
+    cursor: pointer;
+}
+/* checkbox style unchecked */
+.checkbox-custom + .checkbox-custom-label:before {
+    content: '';
+    background: #313131;
+    border: 2px solid #414141;
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 10px;
+    padding: 2px;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+/* checkbox style checked */
+.checkbox-custom-label:after {
+    content: '';
+    width: 6px;
+    height: 3px;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    border: 3px solid #fff;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    opacity: 0;
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    -webkit-transition: opacity 0.2s;
+        -ms-transition: opacity 0.2s;
+            transition: opacity 0.2s;
+}
+.checkbox-custom:hover + .checkbox-custom-label:after {
+    opacity: 0.3;
+}
+.checkbox-custom:checked + .checkbox-custom-label:after {
+    opacity: 1;
+    border-color: #00A4D0;
+}
+

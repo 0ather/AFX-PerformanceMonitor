@@ -1,11 +1,14 @@
 /**
- * CPU MONITORING
+ * CPU monitoring
+ *
+ * @param {node} os from nodejs
+ * @param {array} loaded array
  */
-var cpuMonitor = function() {
+var cpuMonitor = function(os, loaded) {
 	'use strict';
 
-	var os 				= require("os"),
-		cpuMonitorGui	= new GUI("#cpu-container", "cpu", "step", 2);
+	var cpuMonitorGui	= new GUI(loaded, "#cpu-container", "cpu", "step", 2),
+		cpuDisplayInterval;
 
     /**
      * CPU Average for all cores
@@ -63,14 +66,22 @@ var cpuMonitor = function() {
 	}
 
 	/**
+	 * One-core interval display 
+	 */
+	function oneCoreInterval() {
+		setInterval(function() {
+			
+		}, refreshTime);
+	}
+
+	/**
      * Display
      *
      * @param {string} type of display - one-core or multi-core
      * @param {string} span id for the feedback text (percentage of use)
-     * @param {number} refresh interval - default 1000
+     * @param {number} refresh interval - default 2000
      */
 	this.cpuDisplay = function(type, textid, refresh) {
-
 		if (type == "one-core") {
 			var percentageCPU = 0;
 
@@ -82,7 +93,7 @@ var cpuMonitor = function() {
 
 			window.addEventListener('resize', function() { cpuMonitorGui.StepSize(); });
 
-	        setInterval(function() {
+	        cpuDisplayInterval = setInterval(function() {
 	            var endMeasure = cpuAverage();
 
 	            //Calculate the difference in idle and total time between the measures
@@ -97,6 +108,11 @@ var cpuMonitor = function() {
 
 		  		startMeasure = endMeasure;
 			}, refresh);
+
+			// change loaded value from 0 to 1
+			setTimeout(function() {
+				loaded[0] = 1;
+			}, refresh);
 	    } else {
 	        var idleDifference = [];
 	        var totalDifference = [];
@@ -110,7 +126,7 @@ var cpuMonitor = function() {
 
 			window.addEventListener('resize', function() { cpuMonitorGui.StepSize(startMeasure.cpusNumber); });
 
-	        setInterval(function() {
+	        cpuDisplayInterval = setInterval(function() {
 	            var endMeasure = cpuMultiAverage();
 
 	            for ( var j = 0; j < startMeasure.cpusNumber; j++ ) {
@@ -124,10 +140,20 @@ var cpuMonitor = function() {
 	            }
 
 	            startMeasure = endMeasure;
+	        }, refresh);
 
-	            console.log(percentageCPUS);
-
-	        }, 1000);
+			// change loaded value from 0 to 1
+			setTimeout(function() {
+				loaded[0] = 1;
+			}, refresh);
 	    }
 	}
+
+	/**
+	 * Reset the cpu display informations (to change the refresh interval)
+	 */
+	this.cpuResetDisplay = function() {
+    	cpuMonitorGui.removeRow();
+    	clearInterval(cpuDisplayInterval);
+    }
 }

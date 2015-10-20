@@ -1,7 +1,9 @@
 /**
- * Check github updates 
+ * Check github updates
  */
 function checkUpdates() {
+	'use strict';
+	
 	var getGithub 	= new XMLHttpRequest(),
 		getLocal 	= new XMLHttpRequest(),
 		xmlGithub,

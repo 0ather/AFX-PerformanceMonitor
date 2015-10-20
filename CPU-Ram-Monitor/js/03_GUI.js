@@ -7,11 +7,16 @@
  * @param {number} space between steps
  * 
  */
- var GUI = function(container, groupname, stepsname, spacesteps) {
- 	var _container	= container,
+ var GUI = function(loaded, container, groupname, stepsname, spacesteps) {
+ 	'use strict';
+
+ 	var _loaded		= loaded,
+ 		_container	= container,
  		_groupname 	= groupname,
  		_stepsname	= stepsname,
  		_spacesteps	= spacesteps;
+
+ 	_loaded.push(0);
 
  	/**
  	 * Add ROW and steps
@@ -33,10 +38,33 @@
  	}
 
  	/**
+ 	 * Add simple row (for cache)
+ 	 */
+ 	this.addSimpleRow = function(quantity) {
+ 	 	for ( var i = 1; i < quantity+1; i++ ) {
+ 	 		// Add span for percentage monitoring inside container - <span id="cpu / memory-monitoring- i"></span>
+ 	 		$(_container).append('<span id="'+_groupname+'-monitoring-'+i+'"></span>');
+ 	 		// Add cpu/memory element - <cpu / memory></cpu / memory> 
+ 	 		$(_container).append('<'+_groupname+' id="'+_groupname+i+'"></'+_groupname+'>');
+ 	 		$(_container).append('<'+_groupname+' id="'+_groupname+(i+1)+'"></'+_groupname+'>');
+ 	 	}
+ 	}
+
+ 	/**
  	 * Remove ROW and steps
  	 */
  	this.removeRow = function() {
- 		$(_groupname).remove();
+ 		$(_container).empty();
+ 	}
+
+ 	/**
+ 	 * Add button (for cache)
+ 	 */
+
+ 	this.addButton = function(quantity) {
+ 		for ( var i = 1; i < quantity+1; i++ ) {
+ 	 		$(_container).append('<button id="'+_groupname+'-button-'+i+'" class="classic-button">Purge all memory & cache disk</button>');
+ 		}
  	}
 
  	/**
@@ -92,7 +120,7 @@
 				}
 			}
 		} else {
-			var numberSteps = document.getElementsByTagName(_groupname)[j].getElementsByTagName(_stepsname).length,
+			var numberSteps = document.getElementsByTagName(_groupname)[j-1].getElementsByTagName(_stepsname).length,
 				percentPerStep = 100 / numberSteps;
 
 			for ( var i = 1; i < numberSteps+1; i++ ) {
@@ -104,5 +132,16 @@
 				}
 			}
 		}
+	}
+
+	/**
+	 * GUI step simple color
+	 * 
+	 * @param {number} usage of cpu(s) in percent
+	 */
+	this.StepSimpleColor = function(percentage) {
+		var barForegorund = document.getElementsByTagName(_groupname)[1];
+
+		barForegorund.style.width = percentage+"%";
 	}
  }

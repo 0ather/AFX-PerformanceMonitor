@@ -1,32 +1,36 @@
 /**
- * MEMORY MONITORING
+ * Memory monitoring
+ *
+ * @param {node} os from nodejs
+ * @param {array} loaded array
  */
- var memMonitor = function() {
+ var memMonitor = function(os, loaded) {
  	'use strict';
 
-	var os 				= require("os"),
-		child_process 	= require('child_process'),
+ 	var memDisplayInterval;
+
+	var child_process 	= require('child_process'),
 		execFile 		= require('child_process').execFile;
 
 	// Windows
 	var totalMemoryWin 	= os.totalmem(),
-		MemMonitorGui 	= new GUI("#memory-container", "memory", "step", 2);
+		memMonitorGui 	= new GUI(loaded, "#memory-container", "memory", "step", 2);
 
 	// OSX
 	var gosize 			= 1024*1024*1024,
-	totalMemoryOsx,
-	pagesize,
-	pagesfree,
-	pagesactive,
-	pagesinactive,
-	pagesspeculative,
-	pageswireddown,
-	free,
-	inactive,
-	totalfree,
-	wired,
-	active,
-	totalused;
+		totalMemoryOsx,
+		pagesize,
+		pagesfree,
+		pagesactive,
+		pagesinactive,
+		pagesspeculative,
+		pageswireddown,
+		free,
+		inactive,
+		totalfree,
+		wired,
+		active,
+		totalused;
 
 	/**
      * Memory utilisation for windows (nodejs)
@@ -59,8 +63,6 @@
 			pagesinactive 		= parseInt(stdout.split('\n')[3].split(':')[1]);
 			pagesspeculative 	= parseInt(stdout.split('\n')[4].split(':')[1]);
 			pageswireddown 		= parseInt(stdout.split('\n')[6].split(':')[1]);
-			
-			// console.log(stdout);
 
 			free 				= ( pagesfree + pagesspeculative ) * pagesize / gosize,
 			inactive 			= pagesinactive * pagesize / gosize,
@@ -76,24 +78,30 @@
      * Display
      *
      * @param {string} span id for the feedback text (percentage of use)
-     * @param {number} refresh interval - default 1000
+     * @param {number} refresh interval - default 2000
      */
 	this.memoryDisplay = function(textid, refresh) {
-		MemMonitorGui.addRow(1);
+		memMonitorGui.addRow(1);
 
-		MemMonitorGui.StepSize();
-		window.addEventListener('resize', function() { MemMonitorGui.StepSize(); });
+		memMonitorGui.StepSize();
+		window.addEventListener('resize', function() { memMonitorGui.StepSize(); });
 
-		// If windows
 		if ( os.type().indexOf("Windows") > -1 ) {
-			setInterval(function() {
+			// Windows
+			memDisplayInterval = setInterval(function() {
 				var currentValueMem = 100 - memoryUtilisationWIN();
 
 				document.getElementById(textid).innerHTML = currentValueMem + "% MEMORY Usage.";
-				MemMonitorGui.StepColor(currentValueMem);
+				memMonitorGui.StepColor(currentValueMem);
+			}, refresh);
+
+			// change loaded value from 0 to 1
+			setTimeout(function() {
+				loaded[1] = 1;
 			}, refresh);
 		} else {
-			setInterval(function() {
+			// Mac OSX
+			memDisplayInterval = setInterval(function() {
 				// Get memory and wait for the variable (350ms)
 				getMemoryAmountOSX();
 
@@ -105,11 +113,24 @@
 						var currentValueMem = Math.round(totalused);
 
 						document.getElementById(textid).innerHTML = currentValueMem + "% MEMORY Usage.";
-						MemMonitorGui.StepColor(currentValueMem);
+						memMonitorGui.StepColor(currentValueMem);
 					}, 350);
 					
 				}, 350);
 			}, refresh);
+
+			// change loaded value from 0 to 1
+			setTimeout(function() {
+				loaded[1] = 1;
+			}, refresh+350+350);
 		}
 	}
+
+	/**
+	 * Reset the memory display informations (to change the refresh interval)
+	 */
+	this.memoryResetDisplay = function() {
+    	memMonitorGui.removeRow();
+    	clearInterval(memDisplayInterval);
+    }
  }
