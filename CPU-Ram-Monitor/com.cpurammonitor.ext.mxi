@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<macromedia-extension id="com.cpurammonitor.ext" name="CPU-RAM Monitor" version="1.1.0">
+<macromedia-extension id="com.cpurammonitor.ext" name="CPU-Ram-Monitor" version="1.1.1">
   <author name="Florian Lecoq"/>
   <files>
     <file source="css" destination="$userhomefolder/Desktop"/>

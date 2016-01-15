@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="5.0" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleVersion="1.1.0"
-		ExtensionBundleName="CPU-RAM Monitor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleName="CPU-RAM Monitor" ExtensionBundleVersion="1.1.1" Version="5.0">
 	<ExtensionList>
-		<Extension Id="com.cpurammonitor.ext" Version="1.1.0" />
+		<Extension Id="com.cpurammonitor.ext" Version="1.1.1" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
@@ -18,9 +17,10 @@
 	</ExecutionEnvironment>
 	<DispatchInfoList>
 		<Extension Id="com.cpurammonitor.ext">
-			<DispatchInfo >
+			<DispatchInfo>
 				<Resources>
-				<MainPath>./index.html</MainPath>
+					<MainPath>./index.html</MainPath>
+					<CEFCommandLine><Parameter>--enable-nodejs</Parameter></CEFCommandLine>
 				</Resources>
 				<Lifecycle>
 					<AutoVisible>true</AutoVisible>
@@ -34,13 +34,6 @@
 							<Width>300</Width>
 						</Size>
 					</Geometry>
-<!-- 					<Icons>
-						<Icon Type="Normal">./icons/iconNormal.png</Icon>
-						<Icon Type="RollOver">./icons/iconRollover.png</Icon>
-						<Icon Type="Disabled">./icons/iconDisabled.png</Icon>
-						<Icon Type="DarkNormal">./icons/iconDarkNormal.png</Icon>
-						<Icon Type="DarkRollOver">./icons/iconDarkRollover.png</Icon>
-					</Icons>	 -->
 				</UI>
 			</DispatchInfo>
 		</Extension>
