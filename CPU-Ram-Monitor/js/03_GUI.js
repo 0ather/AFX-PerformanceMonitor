@@ -26,7 +26,7 @@
  	this.addRow = function(quantity) {
  	 	for ( var i = 1; i < quantity+1; i++ ) {
  	 		// Add span for percentage monitoring inside container - <span id="cpu / memory-monitoring- i"></span>
- 	 		$(_container).append('<span id="'+_groupname+'-monitoring-'+i+'"></span>');
+ 	 		$(_container).append('<span id="'+_groupname+'-monitoring-'+i+'">Loading...</span>');
  	 		// Add cpu/memory element - <cpu / memory></cpu / memory> 
  	 		$(_container).append('<'+_groupname+' id="'+_groupname+i+'"></'+_groupname+'>');
 
@@ -40,14 +40,12 @@
  	/**
  	 * Add simple row (for cache)
  	 */
- 	this.addSimpleRow = function(quantity) {
- 	 	for ( var i = 1; i < quantity+1; i++ ) {
- 	 		// Add span for percentage monitoring inside container - <span id="cpu / memory-monitoring- i"></span>
- 	 		$(_container).append('<span id="'+_groupname+'-monitoring-'+i+'"></span>');
- 	 		// Add cpu/memory element - <cpu / memory></cpu / memory> 
- 	 		$(_container).append('<'+_groupname+' id="'+_groupname+i+'"></'+_groupname+'>');
- 	 		$(_container).append('<'+_groupname+' id="'+_groupname+(i+1)+'"></'+_groupname+'>');
- 	 	}
+ 	this.addSimpleRow = function() {
+ 		// Add span for percentage monitoring inside container - <span id="cpu / memory-monitoring- i"></span>
+ 		$(_container).append('<span id="'+_groupname+'-monitoring-1">Loading...</span>');
+ 		// Add cpu/memory element - <cpu / memory></cpu / memory> 
+ 		$(_container).append('<'+_groupname+' id="'+_groupname+'1"></'+_groupname+'>');
+ 		$(_container).append('<'+_groupname+' id="'+_groupname+'2" style="width:0%"></'+_groupname+'>');
  	}
 
  	/**
@@ -60,7 +58,6 @@
  	/**
  	 * Add button (for cache)
  	 */
-
  	this.addButton = function(quantity) {
  		for ( var i = 1; i < quantity+1; i++ ) {
  	 		$(_container).append('<button id="'+_groupname+'-button-'+i+'" class="classic-button">Purge all memory & cache disk</button>');
@@ -140,8 +137,8 @@
 	 * @param {number} usage of cpu(s) in percent
 	 */
 	this.StepSimpleColor = function(percentage) {
-		var barForegorund = document.getElementsByTagName(_groupname)[1];
+		var barForeground = document.getElementsByTagName(_groupname)[1];
 
-		barForegorund.style.width = percentage+"%";
+		barForeground.style.width = percentage+"%";
 	}
  }

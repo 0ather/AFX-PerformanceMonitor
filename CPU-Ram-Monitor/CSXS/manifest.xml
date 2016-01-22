@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleName="CPU-RAM Monitor" ExtensionBundleVersion="1.1.1" Version="5.0">
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleName="CPU-RAM Monitor" ExtensionBundleVersion="1.1.2" Version="5.0">
 	<ExtensionList>
-		<Extension Id="com.cpurammonitor.ext" Version="1.1.1" />
+		<Extension Id="com.cpurammonitor.ext" Version="1.1.2" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>

@@ -112,10 +112,7 @@ var themeManager = (function () {
     }
 
 
-    function init() {
-        
-        var csInterface = new CSInterface();
-    
+    function init(csInterface) {   
         updateThemeWithAppSkinInfo(csInterface.hostEnvironment.appSkinInfo);
         
         csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);

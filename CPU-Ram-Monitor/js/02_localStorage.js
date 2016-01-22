@@ -23,7 +23,7 @@ function convertRefreshMs() {
 function getLocalStorage() {
 	'use strict';
 
-	if (localStorage.length == 4) {
+	if (localStorage.length == 3) {
 		// Data in local storage
 		return {
 			coresSetting: localStorage.getItem("cores-setting"),

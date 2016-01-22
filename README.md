@@ -1,4 +1,4 @@
-# CPU-RAM Monitor (v1.1.1) for After Effects
+# CPU-RAM Monitor (v1.1.2) for After Effects
 
 This extension for After Effects (CC 2014 / CC 2015) allows you to always have a look to your CPU and Memory usage without opening any task manager.
 
@@ -54,6 +54,10 @@ If you have any issues, you can report it [here](https://github.com/0ather/AFX-C
 <br />
 <br />
 ## Updates (what's new)
+
+### 1.1.2
+- Disk cache usage patch for After Effects CC 13.6.1
+- Advanced settings update: it's now saving your settings!
 
 ### 1.1.1
 - Adobe After Effects CC 13.6.1 patch (it's now working again!)

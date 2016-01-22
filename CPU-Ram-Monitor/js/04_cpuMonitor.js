@@ -66,15 +66,6 @@ var cpuMonitor = function(os, loaded) {
 	}
 
 	/**
-	 * One-core interval display 
-	 */
-	function oneCoreInterval() {
-		setInterval(function() {
-			
-		}, refreshTime);
-	}
-
-	/**
      * Display
      *
      * @param {string} type of display - one-core or multi-core

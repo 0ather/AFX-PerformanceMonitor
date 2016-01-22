@@ -5,14 +5,15 @@
  (function () {
     'use strict';
 
-    var loaded          = [],
+    var csInterface     = new CSInterface(),
+        softLoading     = 0,
+        loaded          = [],
         loadedSum,
         settings        = getLocalStorage(),
         os              = require("os"),
-        fs              = require("fs"),
         cpu             = new cpuMonitor(os, loaded),
         mem             = new memMonitor(os, loaded),
-        diskCache       = new diskCacheMonitor(fs, loaded),
+        diskCache       = new diskCacheMonitor(loaded, csInterface),
         advSettings     = new advancedSettings(settings, cpu, mem, diskCache);
 
     function showPanel() {
@@ -45,7 +46,7 @@
     function init() {
         if (navigator.onLine === true) checkUpdates();
 
-        themeManager.init();
+        themeManager.init(csInterface);
         advSettings.init();
         cpu.cpuDisplay(settings.coresSetting, "cpu-monitoring", settings.refreshSettingMs);
         mem.memoryDisplay("memory-monitoring-1", settings.refreshSettingMs);
@@ -60,6 +61,7 @@
 
         checkLoad();
     }
-        
+    
+    
     init();
 }());

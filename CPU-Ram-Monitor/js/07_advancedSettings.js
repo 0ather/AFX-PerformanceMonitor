@@ -33,6 +33,8 @@ var advancedSettings = function(settings, cpu, mem, diskCache) {
 
 		// Restart the cpu display (with the new core setting - one or multi)
 		_cpu.cpuDisplay(_settings.coresSetting, "cpu-monitoring", _settings.refreshSettingMs);
+
+		debugger;
 	}
 
 	/**
@@ -87,6 +89,9 @@ var advancedSettings = function(settings, cpu, mem, diskCache) {
 		$('#advanced-settings').click(function() {
 			$('settings').toggleClass("active");
 			$('body').toggleClass("active");
+		});
+		$('#advanced-settings .active').click(function() {
+			$('body').scrollTop(0);
 		});
 
 		// Enable cores setting button (GUI only)

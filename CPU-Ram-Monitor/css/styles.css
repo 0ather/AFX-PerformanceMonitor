@@ -3,11 +3,21 @@
  */
 body {
     margin: 10px;
-    overflow-y: hidden;
 }
 
-body.active {
-    overflow-y: scroll;
+::-webkit-scrollbar {
+    display: none;
+}
+
+a {
+    color: #00A4D0;
+    text-decoration: none;
+    border-bottom: dotted 1px;
+    cursor: pointer;
+}
+
+p {
+    text-align: center;
 }
 
 #content {
@@ -16,6 +26,9 @@ body.active {
     vertical-align:middle;
     width:100%;
     opacity: 0;
+    -webkit-transition: opacity 0.5s;
+        -ms-transition: opacity 0.5s;
+            transition: opacity 0.5s;
 }
 
 .classic-button {
@@ -30,6 +43,103 @@ body.active {
     -webkit-transition: background-color 0.2s;
         -ms-transition: background-color 0.2s;
             transition: background-color 0.2s;
+}
+
+/**
+ * Loading Animation
+ */
+
+#loading {
+    width: 120px;
+    margin: 50px auto;
+}
+
+.circle-1 {
+    height: 120px;
+    width: 120px;
+    background: #00A4D0;
+    margin: 40px 0px 20px 0px;
+}
+
+.circle-2 {
+    height: 100px;
+    width: 100px;
+    background: #168BAA;
+}
+
+.circle-3 {
+    height: 80px;
+    width: 80px;
+    background: #157C97;
+}
+
+.circle-4 {
+    height: 60px;
+    width: 60px;
+    background: #13667C;
+}
+
+.circle-5 {
+    height: 40px;
+    width: 40px;
+    background: #114F60;
+}
+
+.circle-6 {
+    height: 20px;
+    width: 20px;
+    background: #0F4352;
+}
+
+.circle-7 {
+    height: 10px;
+    width: 10px;
+    background: #0D3946;
+}
+
+.circle-8 {
+    height: 5px;
+    width: 5px;
+    background: #0B303A;
+}
+
+.circle-1,
+.circle-2,
+.circle-3,
+.circle-4,
+.circle-5,
+.circle-6,
+.circle-7,
+.circle-8 {
+    border-bottom: none;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 3000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 3000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 /*
@@ -115,13 +225,6 @@ span {
 #updates {
     margin-top: 20px;
     font-size: 10px;
-}
-
-#updates a {
-    color: #00A4D0;
-    text-decoration: none;
-    border-bottom: dotted 1px;
-    cursor: pointer;
 }
 
 /**

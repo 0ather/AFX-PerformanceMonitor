@@ -1,10 +1,10 @@
 /**
  * Disk Cache monitor
  *
- * @param {node} fs from nodejs
  * @param {array} loaded array
+ * @param {object} CSInterface object
  */
-var diskCacheMonitor = function(fs, loaded) {
+var diskCacheMonitor = function(loaded, csInterface) {
 	'use strict';
 
 	var diskCacheDisplayInterval;
@@ -25,7 +25,7 @@ var diskCacheMonitor = function(fs, loaded) {
 			afxVersion = afxVersion.substr(0, afxVersion.lastIndexOf("."));
 		}
 
-		var csInterface = new CSInterface();
+		//var csInterface = new CSInterface();
 		csInterface.evalScript('app.preferences.getPrefAsString("Disk Cache Controls", "Folder 7");', function(result) {
 			diskCachePath = result+"/Adobe/After Effects/"+afxVersion;
 		});
@@ -66,29 +66,9 @@ var diskCacheMonitor = function(fs, loaded) {
 
 	/**
 	 * Manual cache purge
-	 *
-	 * @param {string} path to purge
 	 */
-	function manualPurge(path) {
-		// If valid path
-	  	if( fs.existsSync(path) ) {
-	  		// For each file and folder
-	    	fs.readdirSync(path).forEach(function(file,index) {
-	    		// Curent path of the file or folder
-	      		var curPath = path + "/" + file;
-
-	      		if( fs.lstatSync(curPath).isDirectory() ) {
-	      			// If it's a folder
-	      			// Restart to find other files
-	        		manualPurge(curPath);
-	        		// Then delete the folder
-	        		fs.rmdirSync(curPath);
-	      		} else {
-	      			// If it's a file, delete it
-	        		fs.unlinkSync(curPath);
-	      		}
-	    	});
-	  	}
+	function manualPurge() {
+		csInterface.evalScript("app.executeCommand(10200)");
 	}
 
 	/**
@@ -98,13 +78,13 @@ var diskCacheMonitor = function(fs, loaded) {
      * @param {number} refresh interval - default 2000
 	 */
 	this.diskCacheDisplay = function(textid, refresh) {
-		diskCacheMonitorGui.addSimpleRow(1);
+		diskCacheMonitorGui.addSimpleRow();
 		diskCacheMonitorGui.addButton(1);
 		getDiskCachePrefs();
 
 		// Extra: purge cache on click
 		$('#disk-cache-button-1').click(function() {
-			manualPurge(diskCachePath);
+			manualPurge();
 		});
 
 		// Interval for current cache usage
