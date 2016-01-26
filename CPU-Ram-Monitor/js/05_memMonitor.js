@@ -70,7 +70,7 @@
 			wired 				= pageswireddown * pagesize / gosize,
 			active 				= totalMemoryOsx - ( totalfree + wired );
 
-			totalused 			= (active + wired)/16*100;
+			totalused 			= (active + wired)/totalMemoryOsx*100;
 		});
 	}
 
