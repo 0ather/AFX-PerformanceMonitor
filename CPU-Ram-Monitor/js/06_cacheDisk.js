@@ -10,7 +10,7 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	var diskCacheDisplayInterval;
 
 	var hostEnvironment 	= JSON.parse(window.__adobe_cep__.getHostEnvironment()),
-		afxVersion			= hostEnvironment.appVersion,
+		afxVersion			= hostEnvironment.appVersion.toString(),
 		diskCacheMonitorGui = new GUI(loaded, "#disk-cache-container", "disk-cache", "", ""),
 		diskCachePath,
 		diskCacheSize;
