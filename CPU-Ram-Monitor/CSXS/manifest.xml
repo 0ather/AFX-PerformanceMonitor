@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="com.cpurammonitor.ext" ExtensionBundleName="CPU-RAM Monitor" ExtensionBundleVersion="1.1.4" Version="5.0">
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="CPU-Ram-Monitor" ExtensionBundleName="CPU-Ram-Monitor" ExtensionBundleVersion="1.1.5" Version="5.0">
 	<ExtensionList>
-		<Extension Id="com.cpurammonitor.ext" Version="1.1.4" />
+		<Extension Id="CPU-Ram-Monitor" Version="1.1.5" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-            <Host Name="AEFT" Version="[11.0,15.9]" />
+            <Host Name="AEFT" Version="[11.0,16.9]" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
@@ -15,7 +15,7 @@
 		</RequiredRuntimeList>
 	</ExecutionEnvironment>
 	<DispatchInfoList>
-		<Extension Id="com.cpurammonitor.ext">
+		<Extension Id="CPU-Ram-Monitor">
 			<DispatchInfo>
 				<Resources>
 					<MainPath>./index.html</MainPath>
@@ -29,9 +29,13 @@
 					<Menu>CPU-RAM Monitor</Menu>
 					<Geometry>
 						<Size>
-							<Height>300</Height>
-							<Width>300</Width>
+							<Height>100</Height>
+							<Width>100</Width>
 						</Size>
+						<MinSize>
+					        <Height>100</Height>
+					        <Width>100</Width>
+					    </MinSize>
 					</Geometry>
 				</UI>
 			</DispatchInfo>

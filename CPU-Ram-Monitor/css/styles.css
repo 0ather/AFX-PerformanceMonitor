@@ -3,6 +3,7 @@
  */
 body {
   margin: 10px;
+  font-family: Helvetica, Sans-serif !important;
 }
 
 ::-webkit-scrollbar {
@@ -36,7 +37,6 @@ p {
   font-size: 10px;
   border: 0;
   background-color: #515151;
-  font-family: sans-serif;
   color: inherit;
   cursor: default;
   border-radius: 3px;
