@@ -1,59 +1,26 @@
-# CPU-RAM Monitor (v1.1.4) for After Effects
+# CPU-RAM Monitor (v1.1.5) for After Effects
 
-This extension for After Effects (CC 2014 / CC 2015) allows you to always have a look to your CPU and Memory usage without opening any task manager.
+This extension for After Effects (CC 2014 - CC 2019) allows you to always have a look to your CPU and Memory usage without opening any task manager.
 
 ![Preview](https://i.imgur.com/aCGtXpd.png)
 
 ## Installation instructions
 
-Adobe removed support for the Extension Manager in CC 2015, so you will need to manually install the extension. Don't worry, it's not so complex!
+### With ZXP Installer
 
-### OSX
+1. [Download ZXP Installer](https://aescripts.com/learn/zxp-installer/), a FREE installer for CEP extensions made by Aescripts.com.
 
-1. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/archive/master.zip)
+2. Install ZXP Installer on your computer.
 
-2. Launch Terminal and run this command to open the install folder (or open the folder yourself with CMD+Alt+G in finder):
+3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/CPU-Ram-Monitor_1.1.5.zxp) (.ZXP File).
 
-	```
-	open /Library/Application\ Support/Adobe/CEP/extensions/
-	```
+4. In ZXP Installer, click File -> Open... and choose the .ZXP file you just downloaded.
 
-	If the folder doesn't exist, you can create it.
-
-3. Copy the unzipped CPU-Ram-Monitor folder into the extensions folder.
-
-	![OSX Install](https://i.imgur.com/YGhNkaC.png)
-
-
-4. After restarting After Effects, you'll see the extension under Window -> Extensions -> CPU-RAM Monitor.
-
-	![OSX After Effects](http://i.imgur.com/Q5VUCt6.jpg)
-
-
-### Windows
-
-1. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/archive/master.zip)
-
-2. Copy the unzipper CPU-Ram-Monitor folder into the appropriate directory:
-	- Windows 64: C:\Program Files (x86)\Common Files\Adobe\CEP\extensions\
-	- Windows 32: C:\Program Files\Common Files\Adobe\CEP\extensions\
-
-	If the folder doesn't exist, you can create it.
-	
-	![WIN Install](http://i.imgur.com/4Z6a1kh.jpg)
-
-3. After restarting After Effects, you'll see the extension under Window -> Extensions -> CPU-RAM Monitor.
-
-	![WIN After Effects](http://i.imgur.com/qIsi3tI.jpg)
-		
-	
-## More informations
-
-If you have any issues, you can report it [here](https://github.com/0ather/AFX-CpuRamMonitor/issues).
-  
 <br />
-<br />
-## Updates (what's new)
+## Updates (what is new)
+
+### 1.1.5
+- Fix for the latest Adobe After Effects update (16.0.1).
 
 ### 1.1.4
 - Fix for the latest Adobe After Effects update (13.7).
