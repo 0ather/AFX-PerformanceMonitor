@@ -1,6 +1,6 @@
-# CPU-RAM Monitor (v1.1.5) for After Effects
+# CPU-RAM Monitor (v1.1.6) for After Effects
 
-This extension for After Effects (CC 2014 - CC 2019) allows you to always have a look to your CPU and Memory usage without opening any task manager.
+This extension for After Effects (CC 2014 - CC 2020) allows you to always have a look to your CPU and Memory usage without opening any task manager.
 
 ![Preview](https://i.imgur.com/aCGtXpd.png)
 
@@ -12,14 +12,22 @@ This extension for After Effects (CC 2014 - CC 2019) allows you to always have a
 
 2. Install ZXP Installer on your computer.
 
-3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/CPU-Ram-Monitor_1.1.5.zxp) (.ZXP File).
+3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/CPU-Ram-Monitor_1.1.6.zxp) (.ZXP File).
 
 4. In ZXP Installer, click File -> Open... and choose the .ZXP file you just downloaded.
 
-<br />
+
+
+
+
 ## Updates (what is new)
 
+### 1.1.6
+
+- Fix for the latest Adobe After Effects update (17.0.2).
+
 ### 1.1.5
+
 - Fix for the latest Adobe After Effects update (16.0.1).
 
 ### 1.1.4
@@ -46,7 +54,10 @@ This extension for After Effects (CC 2014 - CC 2019) allows you to always have a
 ### 1.0.0
 - Initial release.
 
-<br />
+
+
+
+
 ## Known issues (After Effects CC 2014 only)
 
 If the "disk cache monitor" is activated, you could be warned about a script issue the next time you open After Effects CC 2014. You just need to close and open the extension again. Sorry about that :(
