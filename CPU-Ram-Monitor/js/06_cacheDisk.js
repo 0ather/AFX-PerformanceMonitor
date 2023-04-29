@@ -20,7 +20,7 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	 */
 	function getDiskCachePrefs() {
 		// Condition for afxVersion (if version 13.5.1, the folder will still be 13.5)
-		if ( afxVersion.indexOf(".") != afxVersion.lastIndexOf(".") ) {
+		if ( afxVersion.includes("13.5") && (afxVersion.indexOf(".") != afxVersion.lastIndexOf(".")) ) {
 			// If afxVersion similar to xx.x.x - delete last number
 			afxVersion = afxVersion.substr(0, afxVersion.lastIndexOf("."));
 		}
