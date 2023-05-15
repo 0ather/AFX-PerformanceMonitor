@@ -27,6 +27,9 @@
         loadedSum = 0;
         // Addition of array values
         for (var num in loaded) {
+            console.log("____ for loop sunLoadVal ____");
+            console.log("____ "+num+" ____");
+            console.log("____ "+loaded+" ____");
             loadedSum += loaded[num];
         }
     }
@@ -35,6 +38,9 @@
         sumLoadVal();
 
         var checkLoadInterval = setInterval(function() {
+            console.log("**** check load interval ****");
+            console.log("**** "+loadedSum+" ****");
+            console.log("**** "+loaded.length+" ****");
             if (loadedSum < loaded.length) {
                 sumLoadVal();
             } else {

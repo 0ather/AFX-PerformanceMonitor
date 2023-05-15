@@ -81,6 +81,10 @@
      * @param {number} refresh interval - default 2000
      */
 	this.memoryDisplay = function(textid, refresh) {
+		var ramMonitorLoaded = 0;
+
+		document.getElementById("loading-ram").innerHTML = "Loading RAM Monitor...";
+
 		memMonitorGui.addRow(1);
 
 		memMonitorGui.StepSize();
@@ -93,11 +97,15 @@
 
 				document.getElementById(textid).innerHTML = currentValueMem + "% MEMORY Usage.";
 				memMonitorGui.StepColor(currentValueMem);
-			}, refresh);
 
-			// change loaded value from 0 to 1
-			setTimeout(function() {
-				loaded[1] = 1;
+				if (ramMonitorLoaded==0) {
+		  			ramMonitorLoaded = 1;
+
+		  			// change loaded value from 0 to 1
+		  			console.log("1 RAM Monitor Loaded");
+					document.getElementById("loading-ram").innerHTML = "RAM Monitor Loaded";
+					loaded[1] = 1;
+		  		}
 			}, refresh);
 		} else {
 			// Mac OSX
@@ -114,15 +122,19 @@
 
 						document.getElementById(textid).innerHTML = currentValueMem + "% MEMORY Usage.";
 						memMonitorGui.StepColor(currentValueMem);
+
+						if (ramMonitorLoaded==0) {
+				  			ramMonitorLoaded = 1;
+
+				  			// change loaded value from 0 to 1
+				  			console.log("1 RAM Monitor Loaded");
+							document.getElementById("loading-ram").innerHTML = "RAM Monitor Loaded";
+							loaded[1] = 1;
+				  		}
 					}, 350);
 					
 				}, 350);
 			}, refresh);
-
-			// change loaded value from 0 to 1
-			setTimeout(function() {
-				loaded[1] = 1;
-			}, refresh+350+350);
 		}
 	}
 

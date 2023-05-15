@@ -13,14 +13,15 @@ var diskCacheMonitor = function(loaded, csInterface) {
 		afxVersion			= hostEnvironment.appVersion.toString(),
 		diskCacheMonitorGui = new GUI(loaded, "#disk-cache-container", "disk-cache", "", ""),
 		diskCachePath,
-		diskCacheSize;
+		diskCacheSize,
+		cacheMonitorLoaded;
 
 	/**
 	 * Get disk cache prefs form after effects
 	 */
 	function getDiskCachePrefs() {
 		// Condition for afxVersion (if version 13.5.1, the folder will still be 13.5)
-		if ( afxVersion.includes("13.5") && (afxVersion.indexOf(".") != afxVersion.lastIndexOf(".")) ) {
+		if ( ( afxVersion.includes("13") || afxVersion.includes("14") || afxVersion.includes("15") || afxVersion.includes("16") || afxVersion.includes("17") || afxVersion.includes("18") ) && ( afxVersion.indexOf(".") != afxVersion.lastIndexOf(".") ) ) {
 			// If afxVersion similar to xx.x.x - delete last number
 			afxVersion = afxVersion.substr(0, afxVersion.lastIndexOf("."));
 		}
@@ -59,8 +60,19 @@ var diskCacheMonitor = function(loaded, csInterface) {
 
 			diskCacheMonitorGui.StepSimpleColor(percentage);
 
-			// change loaded value from 0 to 1
-			loaded[3] = 1;
+			if (cacheMonitorLoaded==0) {
+	  			cacheMonitorLoaded = 1;
+
+	  			// change loaded value from 0 to 1
+				console.log("3 Disk Cache Monitor Loaded");
+				
+				// Check if loaded at launch
+				if (document.getElementById("loading") != null) {
+					document.getElementById("loading-cache").innerHTML = "Disk Cache Monitor Loaded";
+				}
+				
+				loaded[3] = 1;
+		  	}
 		});
 	}
 
@@ -78,6 +90,13 @@ var diskCacheMonitor = function(loaded, csInterface) {
      * @param {number} refresh interval - default 2000
 	 */
 	this.diskCacheDisplay = function(textid, refresh) {
+		cacheMonitorLoaded = 0;
+
+		// Check if loaded at launch
+		if (document.getElementById("loading") != null) {
+			document.getElementById("loading-cache").innerHTML = "Loading Disk Cache Monitor...";
+		}
+
 		diskCacheMonitorGui.addSimpleRow();
 		diskCacheMonitorGui.addButton(1);
 		getDiskCachePrefs();

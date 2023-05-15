@@ -11,8 +11,8 @@ function checkUpdates() {
 		versionGithub,
 		versionLocal;
 
-	getGithub.open("GET", "https://raw.githubusercontent.com/0ather/AFX-CpuRamMonitor/master/CPU-Ram-Monitor/CSXS/manifest.xml", false);
-	getLocal.open("GET", "./CSXS/manifest.xml", false);
+	getGithub.open("GET", "https://raw.githubusercontent.com/0ather/AFX-PerformanceMonitor/master/Performance-Monitor/CSXS/manifest.xml", true);
+	getLocal.open("GET", "./CSXS/manifest.xml", true);
 
 	getGithub.onreadystatechange = function() {
 		if ( getGithub.readyState == 4 ) {
@@ -26,7 +26,7 @@ function checkUpdates() {
 	getLocal.onreadystatechange = function() {
 		if ( getLocal.readyState == 4 ) {
 			xmlLocal = getLocal.responseText;
-			var startIndex = xmlGithub.indexOf("ExtensionBundleVersion");
+			var startIndex = xmlLocal.indexOf("ExtensionBundleVersion");
 
 			versionLocal = xmlLocal.substring(startIndex+24, startIndex+29);
 		}
@@ -37,7 +37,7 @@ function checkUpdates() {
 
 	if ( versionLocal !== versionGithub ) {
 		console.log("A new update is available!");
-		document.getElementById("updates").innerHTML = "A new update is available! <a onclick=\"window.cep.util.openURLInDefaultBrowser('https://github.com/0ather/AFX-CpuRamMonitor')\" href=\"#\">Check on Github.</a>";
+		document.getElementById("updates").innerHTML = "A new update is available! <a onclick=\"window.cep.util.openURLInDefaultBrowser('https://github.com/0ather/AFX-PerformanceMonitor')\" href=\"#\">Check on Github.</a>";
 	} else {
 		console.log("No updates");
 	}

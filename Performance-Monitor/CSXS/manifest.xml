@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="Performance-Monitor" ExtensionBundleName="Performance-Monitor" ExtensionBundleVersion="1.2.0" Version="5.0">
+<ExtensionManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ExtensionBundleId="Performance-Monitor" ExtensionBundleName="Performance-Monitor" ExtensionBundleVersion="1.2.1" Version="5.0">
 	<ExtensionList>
-		<Extension Id="Performance-Monitor" Version="1.2.0" />
+		<Extension Id="Performance-Monitor" Version="1.2.1" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>

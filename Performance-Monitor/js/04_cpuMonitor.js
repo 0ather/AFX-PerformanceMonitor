@@ -73,10 +73,12 @@ var cpuMonitor = function(os, loaded) {
      * @param {number} refresh interval - default 2000
      */
 	this.cpuDisplay = function(type, textid, refresh) {
-		if (type == "one-core") {
-			var percentageCPU = 0;
+		document.getElementById("loading-cpu").innerHTML = "Loading CPU Monitor...";
 
-			var startMeasure = cpuAverage();
+		if (type == "one-core") {
+			var cpuMonitorLoaded = 0,
+				percentageCPU = 0,
+				startMeasure = cpuAverage();
 
 			cpuMonitorGui.addRow(1);
 
@@ -98,11 +100,15 @@ var cpuMonitor = function(os, loaded) {
 		  		cpuMonitorGui.StepColor(percentageCPU);
 
 		  		startMeasure = endMeasure;
-			}, refresh);
 
-			// change loaded value from 0 to 1
-			setTimeout(function() {
-				loaded[0] = 1;
+		  		if (cpuMonitorLoaded==0) {
+		  			cpuMonitorLoaded = 1;
+
+		  			// change loaded value from 0 to 1
+		  			console.log("0 CPU Monitor Loaded");
+					document.getElementById("loading-cpu").innerHTML = "CPU Monitor Loaded";
+					loaded[0] = 1;
+		  		}
 			}, refresh);
 	    } else {
 	        var idleDifference = [];
@@ -131,12 +137,16 @@ var cpuMonitor = function(os, loaded) {
 	            }
 
 	            startMeasure = endMeasure;
-	        }, refresh);
 
-			// change loaded value from 0 to 1
-			setTimeout(function() {
-				loaded[0] = 1;
-			}, refresh);
+	            if (cpuMonitorLoaded==0) {
+		  			cpuMonitorLoaded = 1;
+
+		  			// change loaded value from 0 to 1
+		  			console.log("0 CPU Monitor Loaded");
+					document.getElementById("loading-cpu").innerHTML = "CPU Monitor Loaded";
+					loaded[0] = 1;
+		  		}
+	        }, refresh);
 	    }
 	}
 

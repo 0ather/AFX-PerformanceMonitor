@@ -1,4 +1,4 @@
-# Performance Monitor (v1.2.0) for After Effects
+# Performance Monitor (v1.2.1) for After Effects
 
 This extension for After Effects (CC 2014 - CC 2023) allows you to always have a look to your CPU, Memory and VRAM usage without opening any task manager. You can also check your current disk cache usage as an option, as well as purge all memory and disk cache by left clicking on it.
 
@@ -12,7 +12,7 @@ This extension for After Effects (CC 2014 - CC 2023) allows you to always have a
 
 2. Install ZXP Installer on your computer.
 
-3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/Performance-Monitor_1.2.0.zxp) (.ZXP File).
+3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/Performance-Monitor_1.2.1.zxp) (.ZXP File).
 
 4. In ZXP Installer, click File -> Open... and choose the .ZXP file you just downloaded.
 
@@ -22,7 +22,7 @@ This extension for After Effects (CC 2014 - CC 2023) allows you to always have a
 
 ## Updates (what is new)
 
-### 1.2.0
+### 1.2.1
 
 - Added VRAM usage (for Windows only). Renamed the extension "Performance Monitor".
 
