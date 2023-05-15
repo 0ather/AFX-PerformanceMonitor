@@ -1,0 +1,368 @@
+/**
+ * General styles
+ */
+body {
+  margin: 10px;
+  font-family: Helvetica, Sans-serif !important;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: #00A4D0;
+  text-decoration: none;
+  border-bottom: dotted 1px;
+  cursor: pointer;
+}
+
+p {
+  text-align: center;
+}
+
+#content {
+  margin-right:auto;
+  margin-left:auto;
+  vertical-align:middle;
+  width:100%;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s;
+      -ms-transition: opacity 0.5s;
+          transition: opacity 0.5s;
+}
+
+.classic-button {
+  padding: 4px 12px;
+  font-size: 10px;
+  border: 0;
+  background-color: #515151;
+  color: inherit;
+  cursor: default;
+  border-radius: 3px;
+  -webkit-transition: background-color 0.2s;
+      -ms-transition: background-color 0.2s;
+          transition: background-color 0.2s;
+}
+
+/**
+ * Loading Animation
+ */
+
+#loading {
+  width: 120px;
+  margin: 50px auto;
+}
+
+.loader {
+  position: relative;
+  width: 0;
+  height: 0;
+  margin: 4em auto;
+  -webkit-animation: anim-rotate 1.2s infinite ease;
+          animation: anim-rotate 1.2s infinite ease;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 10px;
+  opacity: .9;
+}
+
+.loader::before {
+  background: #00A4D0;
+  -webkit-transform: translate(-0.75em, -0.75em) scale(1);
+          transform: translate(-0.75em, -0.75em) scale(1);
+  box-shadow: 1.5em 1.5em 0 #00A4D0;
+  -webkit-animation: anim-1-2 1.2s infinite ease;
+          animation: anim-1-2 1.2s infinite ease;
+}
+
+.loader:after {
+  background: #00A4D0;
+  -webkit-transform: translate(0.75em, -0.75em) scale(1);
+          transform: translate(0.75em, -0.75em) scale(1);
+  box-shadow: -1.5em 1.5em 0 #00A4D0;
+  -webkit-animation: anim-3-4 1.2s infinite ease;
+          animation: anim-3-4 1.2s infinite ease;
+}
+
+@-webkit-keyframes anim-1-2 {
+  50% {
+    -webkit-transform: scale(1.3) translate(0, 0);
+            transform: scale(1.3) translate(0, 0);
+    box-shadow: 0 0 0 #00A4D0;
+    opacity: .8;
+  }
+}
+
+@keyframes anim-1-2 {
+  50% {
+    -webkit-transform: scale(1.3) translate(0, 0);
+            transform: scale(1.3) translate(0, 0);
+    box-shadow: 0 0 0 #00A4D0;
+    opacity: .8;
+  }
+}
+
+@-webkit-keyframes anim-3-4 {
+  50% {
+    -webkit-transform: scale(1.3) translate(0, 0);
+            transform: scale(1.3) translate(0, 0);
+    box-shadow: 0 0 0 #00A4D0;
+    opacity: .8;
+  }
+}
+
+@keyframes anim-3-4 {
+  50% {
+    -webkit-transform: scale(1.3) translate(0, 0);
+            transform: scale(1.3) translate(0, 0);
+    box-shadow: 0 0 0 #00A4D0;
+    opacity: .8;
+  }
+}
+
+@-webkit-keyframes anim-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+  100% {
+    -webkit-transform: rotate(720deg);
+            transform: rotate(720deg);
+  }
+}
+
+@keyframes anim-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+  100% {
+    -webkit-transform: rotate(720deg);
+            transform: rotate(720deg);
+  }
+}
+
+
+/*
+Those classes will be edited at runtime with values specified
+by the settings of the CC application
+*/
+.hostFontColor{}
+.hostFontFamily{}
+.hostFontSize{}
+
+/*font family, color and size*/
+.hostFont{}
+/*background color*/
+.hostBgd{}
+/*lighter background color*/
+.hostBgdLight{}
+/*darker background color*/
+.hostBgdDark{}
+/*background color and font*/
+.hostElt{}
+
+/**
+ * CPU - Memory - Cache Disk
+ */
+#cpu-container, #memory-container, #gpu-container, #disk-cache-container {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 5px;
+}
+
+cpu, memory, gpu {
+    background-color: #363636;
+    display: -webkit-flex;
+    -webkit-justify-content: space-between;
+}
+
+disk-cache, step {
+    display: block;
+    height: 20px;
+}
+
+step {
+    width: 10px;
+}
+
+span {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.step-disabled, #disk-cache1 {
+    background-color: #414141;
+}
+
+.step-enabled, #disk-cache2 {
+    background-color: #00A4D0;
+}
+
+#disk-cache2 {
+    margin-top: -20px;
+}
+
+#disk-cache-button-1 {
+    display: block;
+    width: 100%;
+    height: 20px;
+    margin-top: -20px;
+    border-radius: 0px;
+    opacity: 0;
+    background-color: rgba(81, 81, 81, 0.7);
+    -webkit-transition: opacity 0.3s;
+        -ms-transition: opacity 0.3s;
+            transition: opacity 0.3s;
+}
+
+#disk-cache-button-1:hover {
+    opacity: 1;
+}
+
+/**
+ * Updates
+ */
+#updates {
+    margin-top: 20px;
+    font-size: 10px;
+}
+
+/**
+ * Advanced Settings
+ */
+#advanced-settings {
+    margin-top: 20px;
+    cursor: pointer;
+}
+#advanced-settings:hover {
+    background-color: #414141;
+}
+
+cores, refresh, settings span {
+    display: block;
+}
+
+settings {
+    display: block;
+    opacity: 0;
+    margin-top: 10px;
+    border: 1px solid #313131;
+    padding: 13px;
+    -webkit-transition: opacity 0.5s;
+        -ms-transition: opacity 0.5s;
+            transition: opacity 0.5s;
+}
+
+settings span {
+    margin-bottom: 10px;
+    font-size: 10px;
+    cursor: default;
+}
+
+settings.active {
+    opacity: 1;
+}
+
+settings.active .button-disabled {
+    cursor: pointer;
+}
+
+.settings-button {
+    margin-bottom: 10px;
+}
+
+.button-disabled {
+    background-color: #212121;
+}
+
+.button-enabled {
+    background-color: #414141;
+}
+
+.button-disabled:hover {
+    background-color: #313131;
+}
+
+#disk-cache-button-1 {
+    cursor: pointer;
+}
+
+/**
+ * Custom Checkbox 
+ */
+
+/* hide default checkbox */
+.checkbox-custom {
+    opacity: 0;
+    position: absolute;
+}
+/* position label */
+.checkbox-custom-label {
+    position: relative;
+}
+/* add cursor pointer */
+.checkbox-custom, .checkbox-custom-label {
+    cursor: pointer;
+}
+/* checkbox style unchecked */
+.checkbox-custom + .checkbox-custom-label:before {
+    content: '';
+    background: #313131;
+    border: 2px solid #414141;
+    display: inline-block;
+    vertical-align: middle;
+    width: 10px;
+    height: 10px;
+    padding: 2px;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+/* checkbox style checked */
+.checkbox-custom-label:after {
+    content: '';
+    width: 6px;
+    height: 3px;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    border: 3px solid #fff;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    opacity: 0;
+    -webkit-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+    -webkit-transition: opacity 0.2s;
+        -ms-transition: opacity 0.2s;
+            transition: opacity 0.2s;
+}
+.checkbox-custom:hover + .checkbox-custom-label:after {
+    opacity: 0.3;
+}
+.checkbox-custom:checked + .checkbox-custom-label:after {
+    opacity: 1;
+    border-color: #00A4D0;
+}
+

@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+        
+<link rel="stylesheet" href="css/topcoat-desktop-dark.min.css"/>
+<link id="hostStyle" rel="stylesheet" href="css/styles.css"/>
+
+<title></title>
+</head>
+
+<body class="hostElt">
+    <div id="loading">
+        <p>Loading...</p>
+        <div class="loader"></div>
+        <br><br><br><br><p>By <a onclick="window.cep.util.openURLInDefaultBrowser('http://codepen.io/msanz/')" href="#">Mario Sanz</a></p>
+    </div>
+    
+    <div id="content">
+        <div id="cpu-container"></div>
+        <div id="memory-container"></div>
+        <div id="gpu-container"></div>
+        <div id="disk-cache-container"></div>
+        <div id="updates"></div>
+        <button id="advanced-settings" class="classic-button">Advanced settings</button>
+        <settings>
+            <cores>
+                <span>CPU settings</span>
+                <button id="one-core" class="settings-button classic-button button-disabled">Show one core</button>
+                <button id="multi-core" class="settings-button classic-button button-disabled">Show all cores</button>
+            </cores>
+            <refresh>
+                <span>Update frequency</span>
+                <button id="refresh-normal" class="settings-button classic-button button-disabled">Normally</button>
+                <button id="refresh-often" class="settings-button classic-button button-disabled">Often</button>
+                <button id="refresh-veryoften" class="settings-button classic-button button-disabled">Very often</button>
+            </refresh>
+            <showcache>
+                <span>Show cache disk usage</span>
+                <input id="cache-disk-checkbox" class="settings-button checkbox-custom" name="cache-disk-checkbox" type="checkbox">
+                    <label for="cache-disk-checkbox" class="checkbox-custom-label"></label>
+            </showcache>
+        </settings>
+    </div>
+    
+    <script src="js/libs/CSInterface.js"></script>
+    <script src="js/libs/jquery-2.0.2.min.js"></script>
+
+    <script src="js/00_themeManager.js"></script>
+    <script src="js/01_checkUpdates.js"></script>
+    <script src="js/02_localStorage.js"></script>
+    <script src="js/03_GUI.js"></script>
+    <script src="js/04_cpuMonitor.js"></script>
+    <script src="js/05_memMonitor.js"></script>
+    <script src="js/06_cacheDisk.js"></script>
+    <script src="js/07_advancedSettings.js"></script>
+    <script src="js/08_gpuMonitor.js"></script>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
