@@ -9,12 +9,14 @@ This extension for After Effects (CC 2014 - CC 2023) allows you to always have a
 ### With ZXP Installer
 
 1. [Download ZXP Installer](https://aescripts.com/learn/zxp-installer/), a FREE installer for CEP extensions made by Aescripts.com.
+Alternatively, you can use [Anastasiy’s Extension Manager]((https://install.anastasiy.com/), a third-party developed tool that can help you install extensions packaged in .zxp format.
 
-2. Install ZXP Installer on your computer.
+2. Install ZXP Installer or Anastasiy’s Extension Manager on your computer.
 
 3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/Performance-Monitor_1.2.1.zxp) (.ZXP File).
 
 4. In ZXP Installer, click File -> Open... and choose the .ZXP file you just downloaded.
+In Anastasiy’s Extension Manager, click File -> Install Extension and choose the .ZXP file you just downloaded.
 
 
 
