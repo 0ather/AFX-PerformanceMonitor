@@ -9,7 +9,7 @@ This extension for After Effects (CC 2014 - CC 2023) allows you to always have a
 ### With ZXP Installer
 
 1. [Download ZXP Installer](https://aescripts.com/learn/zxp-installer/), a FREE installer for CEP extensions made by Aescripts.com.
-Alternatively, you can use [Anastasiy’s Extension Manager]((https://install.anastasiy.com/), a third-party developed tool that can help you install extensions packaged in .zxp format.
+Alternatively, you can use [Anastasiy’s Extension Manager](https://install.anastasiy.com/), a third-party developed tool that can help you install extensions packaged in .zxp format.
 
 2. Install ZXP Installer or Anastasiy’s Extension Manager on your computer.
 
