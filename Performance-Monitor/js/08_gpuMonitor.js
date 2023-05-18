@@ -51,17 +51,18 @@
      * @param {number} refresh interval - default 2000
      */
 	this.gpuDisplay = function(textid, refresh) {
-		var gpuMonitorLoaded = 0;
-		
-		document.getElementById("loading-gpu").innerHTML = "Loading GPU Monitor...";
-
-		gpuMonitorGui.addRow(1);
-
-		gpuMonitorGui.StepSize();
-		window.addEventListener('resize', function() { gpuMonitorGui.StepSize(); });
-
 		if ( os.type().indexOf("Windows") > -1 ) {
 			// Windows
+			var gpuMonitorLoaded = 0;
+			
+			document.getElementById("loading-gpu").innerHTML = "Loading GPU Monitor...";
+
+			gpuMonitorGui.addRow(1);
+
+			gpuMonitorGui.StepSize();
+			window.addEventListener('resize', function() { gpuMonitorGui.StepSize(); });
+
+		
 			gpuDisplayInterval = setInterval(function() {
 				getGPUinfo();
 
@@ -84,6 +85,10 @@
 					loaded[2] = 1;
 			  	}
 			}, refresh);
+		} else {
+			// change loaded value from 0 to 1
+		  	console.log("2 GPU Monitor Loaded");
+			loaded[2] = 1;
 		}
 	}
 

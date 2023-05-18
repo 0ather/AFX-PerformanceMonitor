@@ -27,9 +27,6 @@
         loadedSum = 0;
         // Addition of array values
         for (var num in loaded) {
-            console.log("____ for loop sunLoadVal ____");
-            console.log("____ "+num+" ____");
-            console.log("____ "+loaded+" ____");
             loadedSum += loaded[num];
         }
     }
@@ -38,9 +35,6 @@
         sumLoadVal();
 
         var checkLoadInterval = setInterval(function() {
-            console.log("**** check load interval ****");
-            console.log("**** "+loadedSum+" ****");
-            console.log("**** "+loaded.length+" ****");
             if (loadedSum < loaded.length) {
                 sumLoadVal();
             } else {
@@ -64,7 +58,7 @@
             diskCache.diskCacheDisplay("disk-cache-monitoring-1", settings.refreshSettingMs);
         } else {
             // Else, remove diskCache loaded value in array (don't need it)
-            loaded.splice(2, 1);
+            loaded.splice((loaded.length-1), 1);
         }
 
         checkLoad();
