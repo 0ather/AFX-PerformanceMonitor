@@ -34,8 +34,6 @@ var advancedSettings = function(settings, cpu, mem, gpu, diskCache) {
 
 		// Restart the cpu display (with the new core setting - one or multi)
 		_cpu.cpuDisplay(_settings.coresSetting, "cpu-monitoring", _settings.refreshSettingMs);
-
-		debugger;
 	}
 
 	/**

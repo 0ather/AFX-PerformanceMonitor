@@ -1,4 +1,18 @@
 /**
+ * Write a message on the loading screen (does nothing once the panel is loaded)
+ *
+ * @param {string} id of the loading span - loading-cpu, loading-ram, loading-gpu, loading-cache
+ * @param {string} message
+ */
+function setLoadingText(id, text) {
+	'use strict';
+
+	var element = document.getElementById(id);
+
+	if (element != null) element.innerHTML = text;
+}
+
+/**
  * GUI
  * 
  * @param {string} gui container - cpu-container, memory-container

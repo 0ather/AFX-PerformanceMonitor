@@ -8,38 +8,33 @@
  	'use strict';
 
  	var gpuDisplayInterval,
-		GPUcontrollers,
-		GPUtarget,
-		totalVRAM,
-		freeVRAM,
-		dataFetched = 0;
+		requestInProgress = false;
 
-    function getGPUinfo() {
-    	dataFetched = 0;
+	/**
+	 * Get the VRAM usage of the main GPU, then send the percentage to the callback
+	 * (null if the GPU doesn't report its free memory)
+	 */
+	function getGPUinfo(callback) {
+		require('systeminformation').graphics().then(function(data) {
+			var GPUcontrollers	= data.controllers,
+				GPUtarget		= GPUcontrollers[0];
 
-    	var GPUinfo = require('systeminformation').graphics();
+			// If more than 1 GPU, take the dedicated one (not integrated)
+			for (var i=0; i < GPUcontrollers.length; i++) {
+				if (GPUcontrollers[i].hasOwnProperty("clockCore")) {
+					GPUtarget = GPUcontrollers[i];
+				}
+			}
 
-    	GPUinfo.then(data => {
-	        // Once we've got the data save as variable
-	        GPUcontrollers = data.controllers;
-
-	        // If more than 1 GPU check if integrated or not
-	        if (GPUcontrollers.length > 1) {
-	        	for (var i=0; i < GPUcontrollers.length; i++) {
-	        		if (GPUcontrollers[i].hasOwnProperty("clockCore")) {
-	        			GPUtarget = GPUcontrollers[i];
-	        		}
-	        	}
-	        } else {
-	        	GPUtarget = GPUcontrollers[0];
-	        }
-
-	        dataFetched = 1;
-
-	        totalVRAM = GPUtarget.memoryTotal;
-	        freeVRAM = GPUtarget.memoryFree;
-	    });
-    }
+			if ( !GPUtarget || !GPUtarget.memoryTotal || GPUtarget.memoryFree == undefined ) {
+				callback(null);
+			} else {
+				callback(100 - Math.floor( GPUtarget.memoryFree / GPUtarget.memoryTotal * 100 ));
+			}
+		}).catch(function() {
+			callback(null);
+		});
+	}
 
 	var gpuMonitorGui = new GUI(loaded, "#gpu-container", "gpu", "step", 2);
 
@@ -54,36 +49,41 @@
 		if ( os.type().indexOf("Windows") > -1 ) {
 			// Windows
 			var gpuMonitorLoaded = 0;
-			
-			document.getElementById("loading-gpu").innerHTML = "Loading GPU Monitor...";
+
+			setLoadingText("loading-gpu", "Loading GPU Monitor...");
 
 			gpuMonitorGui.addRow(1);
 
 			gpuMonitorGui.StepSize();
 			window.addEventListener('resize', function() { gpuMonitorGui.StepSize(); });
 
-		
 			gpuDisplayInterval = setInterval(function() {
-				getGPUinfo();
+				// Skip this tick if the previous request is still running
+				if (requestInProgress) return;
+				requestInProgress = true;
 
-				var checkDataInterval = setInterval(function() {
-					if (dataFetched != 0) {
-						dataFetched = 0;
-						var VRAMcurrentValue = 100 - ( Math.floor( freeVRAM / totalVRAM *100 ) );
+				getGPUinfo(function(VRAMcurrentValue) {
+					requestInProgress = false;
 
+					// Display may have been reset while waiting
+					if (!document.getElementById(textid)) return;
+
+					if (VRAMcurrentValue === null) {
+						document.getElementById(textid).innerHTML = "VRAM usage unavailable.";
+					} else {
 						document.getElementById(textid).innerHTML = VRAMcurrentValue + "% VRAM Usage.";
 						gpuMonitorGui.StepColor(VRAMcurrentValue);
 					}
-				}, (refresh/2));
 
-				if (gpuMonitorLoaded==0) {
-		  			gpuMonitorLoaded = 1;
+					if (gpuMonitorLoaded==0) {
+						gpuMonitorLoaded = 1;
 
-		  			// change loaded value from 0 to 1
-		  			console.log("2 GPU Monitor Loaded");
-					document.getElementById("loading-gpu").innerHTML = "GPU Monitor Loaded";
-					loaded[2] = 1;
-			  	}
+						// change loaded value from 0 to 1
+						console.log("2 GPU Monitor Loaded");
+						setLoadingText("loading-gpu", "GPU Monitor Loaded");
+						loaded[2] = 1;
+					}
+				});
 			}, refresh);
 		} else {
 			// change loaded value from 0 to 1

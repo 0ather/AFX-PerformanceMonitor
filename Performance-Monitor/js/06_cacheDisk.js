@@ -17,18 +17,53 @@ var diskCacheMonitor = function(loaded, csInterface) {
 		cacheMonitorLoaded;
 
 	/**
+	 * Keep only "major.minor" of the After Effects version (ex: "13.5.1" -> "13.5", "25.2.0x16" -> "25.2")
+	 *
+	 * @param {string} After Effects version
+	 */
+	function shortVersion(version) {
+		var match = /^(\d+)\.(\d+)/.exec(version);
+
+		return match ? match[1] + "." + match[2] : version;
+	}
+
+	/**
+	 * Find the disk cache folder for this After Effects version
+	 * If "major.minor" doesn't exist, fall back on the latest folder of the same major version
+	 *
+	 * @param {string} "Adobe/After Effects" folder inside the disk cache folder
+	 */
+	function findCacheFolder(baseFolder) {
+		var fs			= require('fs'),
+			path		= require('path'),
+			version		= shortVersion(afxVersion),
+			major		= version.split(".")[0],
+			candidates;
+
+		if ( fs.existsSync(path.join(baseFolder, version)) ) {
+			return path.join(baseFolder, version);
+		}
+
+		try {
+			candidates = fs.readdirSync(baseFolder).filter(function(name) {
+				return name.split(".")[0] === major;
+			}).sort(function(a, b) {
+				return parseFloat(b) - parseFloat(a);
+			});
+		} catch (e) {
+			candidates = [];
+		}
+
+		return candidates.length ? path.join(baseFolder, candidates[0]) : path.join(baseFolder, version);
+	}
+
+	/**
 	 * Get disk cache prefs form after effects
 	 */
 	function getDiskCachePrefs() {
-		// Condition for afxVersion (if version 13.5.1, the folder will still be 13.5)
-		if ( ( afxVersion.includes("13") || afxVersion.includes("14") || afxVersion.includes("15") || afxVersion.includes("16") || afxVersion.includes("17") || afxVersion.includes("18") ) && ( afxVersion.indexOf(".") != afxVersion.lastIndexOf(".") ) ) {
-			// If afxVersion similar to xx.x.x - delete last number
-			afxVersion = afxVersion.substr(0, afxVersion.lastIndexOf("."));
-		}
-
 		//var csInterface = new CSInterface();
 		csInterface.evalScript('app.preferences.getPrefAsString("Disk Cache Controls", "Folder 7");', function(result) {
-			diskCachePath = result+"/Adobe/After Effects/"+afxVersion;
+			diskCachePath = findCacheFolder(result+"/Adobe/After Effects");
 		});
 		csInterface.evalScript('app.preferences.getPrefAsString("Disk Cache Controls", "Max Size 3");', function(result) {
 			diskCacheSize = result;
@@ -45,8 +80,15 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	function getCacheUsage(diskCachePath, diskCacheSize, textid) {
 		var getCurrentCacheUsage = require('get-folder-size');
 
+		// Wait for the After Effects prefs (evalScript is asynchronous)
+		if ( !diskCachePath || !diskCacheSize ) return;
+
 		getCurrentCacheUsage(diskCachePath, function(err, size) {
-			if (err) { throw err; }
+			if (err) {
+				// Folder not found (cache empty or not created yet)
+				console.log("Disk cache folder not found: " + diskCachePath);
+				size = 0;
+			}
 
 			var sizeMb 		= size/1024/1024,
 				sizeGB 		= size/1024/1024/1024,
@@ -66,10 +108,7 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	  			// change loaded value from 0 to 1
 				console.log("3 Disk Cache Monitor Loaded");
 				
-				// Check if loaded at launch
-				if (document.getElementById("loading") != null) {
-					document.getElementById("loading-cache").innerHTML = "Disk Cache Monitor Loaded";
-				}
+				setLoadingText("loading-cache", "Disk Cache Monitor Loaded");
 				
 				loaded[3] = 1;
 		  	}
@@ -92,10 +131,7 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	this.diskCacheDisplay = function(textid, refresh) {
 		cacheMonitorLoaded = 0;
 
-		// Check if loaded at launch
-		if (document.getElementById("loading") != null) {
-			document.getElementById("loading-cache").innerHTML = "Loading Disk Cache Monitor...";
-		}
+		setLoadingText("loading-cache", "Loading Disk Cache Monitor...");
 
 		diskCacheMonitorGui.addSimpleRow();
 		diskCacheMonitorGui.addButton(1);

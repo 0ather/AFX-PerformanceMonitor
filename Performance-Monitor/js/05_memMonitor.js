@@ -9,28 +9,12 @@
 
  	var memDisplayInterval;
 
-	var child_process 	= require('child_process'),
-		execFile 		= require('child_process').execFile;
+	var execFile 		= require('child_process').execFile,
+		requestInProgress = false;
 
-	// Windows
-	var totalMemoryWin 	= os.totalmem(),
+	// Windows and OSX (total memory in bytes)
+	var totalMemory 	= os.totalmem(),
 		memMonitorGui 	= new GUI(loaded, "#memory-container", "memory", "step", 2);
-
-	// OSX
-	var gosize 			= 1024*1024*1024,
-		totalMemoryOsx,
-		pagesize,
-		pagesfree,
-		pagesactive,
-		pagesinactive,
-		pagesspeculative,
-		pageswireddown,
-		free,
-		inactive,
-		totalfree,
-		wired,
-		active,
-		totalused;
 
 	/**
      * Memory utilisation for windows (nodejs)
@@ -38,39 +22,31 @@
 	function memoryUtilisationWIN() {
 		// freeMemory in bytes
 		var freeMemory 			= os.freemem(),
-			freememPercentage 	= Math.floor( freeMemory / totalMemoryWin *100 );
+			freememPercentage 	= Math.floor( freeMemory / totalMemory *100 );
 
 		return freememPercentage;
 	}
 
 	/**
-     * Memory amount on OSX
+     * Memory utilisation for OSX (with vm_stat), sent to the callback in percent
+     * Lines are read by their name, as their order changes between macOS versions
      */
-	function getMemoryAmountOSX() {
-		child_process.exec('sysctl hw.memsize', function (err, data) {
-		    totalMemoryOsx = (parseInt(data.split(':')[1]))/gosize;
-		});
-	}
+	function memoryUtilisationOSX(callback) {
+		execFile('/usr/bin/vm_stat', function(error, stdout) {
+			if (error) return callback(null);
 
-	/**
-     * Memory utilisation for OSX (with vm_stat)
-     */
-	function getVmstatsInfosOSX() {
-		execFile('/usr/bin/vm_stat', function(error, stdout, stderr) {
-			pagesize 			= parseInt(stdout.split('\n')[0].split('of')[1]);
-			pagesfree 			= parseInt(stdout.split('\n')[1].split(':')[1]);
-			pagesactive 		= parseInt(stdout.split('\n')[2].split(':')[1]);
-			pagesinactive 		= parseInt(stdout.split('\n')[3].split(':')[1]);
-			pagesspeculative 	= parseInt(stdout.split('\n')[4].split(':')[1]);
-			pageswireddown 		= parseInt(stdout.split('\n')[6].split(':')[1]);
+			function readPages(label) {
+				var match = new RegExp(label + ':\\s*(\\d+)').exec(stdout);
 
-			free 				= ( pagesfree + pagesspeculative ) * pagesize / gosize,
-			inactive 			= pagesinactive * pagesize / gosize,
-			totalfree 			= free + inactive,
-			wired 				= pageswireddown * pagesize / gosize,
-			active 				= totalMemoryOsx - ( totalfree + wired );
+				return match ? parseInt(match[1], 10) : 0;
+			}
 
-			totalused 			= (active + wired)/totalMemoryOsx*100;
+			var pageSizeMatch	= /page size of (\d+) bytes/.exec(stdout),
+				pagesize		= pageSizeMatch ? parseInt(pageSizeMatch[1], 10) : 4096,
+				// Free memory = free + speculative + inactive pages
+				totalfree		= ( readPages("Pages free") + readPages("Pages speculative") + readPages("Pages inactive") ) * pagesize;
+
+			callback(Math.round( (totalMemory - totalfree) / totalMemory * 100 ));
 		});
 	}
 
@@ -83,7 +59,7 @@
 	this.memoryDisplay = function(textid, refresh) {
 		var ramMonitorLoaded = 0;
 
-		document.getElementById("loading-ram").innerHTML = "Loading RAM Monitor...";
+		setLoadingText("loading-ram", "Loading RAM Monitor...");
 
 		memMonitorGui.addRow(1);
 
@@ -103,37 +79,39 @@
 
 		  			// change loaded value from 0 to 1
 		  			console.log("1 RAM Monitor Loaded");
-					document.getElementById("loading-ram").innerHTML = "RAM Monitor Loaded";
+					setLoadingText("loading-ram", "RAM Monitor Loaded");
 					loaded[1] = 1;
 		  		}
 			}, refresh);
 		} else {
 			// Mac OSX
 			memDisplayInterval = setInterval(function() {
-				// Get memory and wait for the variable (350ms)
-				getMemoryAmountOSX();
+				// Skip this tick if the previous vm_stat is still running
+				if (requestInProgress) return;
+				requestInProgress = true;
 
-				setTimeout(function() {
-					// Get vm_stats infos and wait for the variables (350ms)
-					getVmstatsInfosOSX();
+				memoryUtilisationOSX(function(currentValueMem) {
+					requestInProgress = false;
 
-					setTimeout(function() {
-						var currentValueMem = Math.round(totalused);
+					// Display may have been reset while waiting
+					if (!document.getElementById(textid)) return;
 
+					if (currentValueMem === null) {
+						document.getElementById(textid).innerHTML = "MEMORY usage unavailable.";
+					} else {
 						document.getElementById(textid).innerHTML = currentValueMem + "% MEMORY Usage.";
 						memMonitorGui.StepColor(currentValueMem);
+					}
 
-						if (ramMonitorLoaded==0) {
-				  			ramMonitorLoaded = 1;
+					if (ramMonitorLoaded==0) {
+			  			ramMonitorLoaded = 1;
 
-				  			// change loaded value from 0 to 1
-				  			console.log("1 RAM Monitor Loaded");
-							document.getElementById("loading-ram").innerHTML = "RAM Monitor Loaded";
-							loaded[1] = 1;
-				  		}
-					}, 350);
-					
-				}, 350);
+			  			// change loaded value from 0 to 1
+			  			console.log("1 RAM Monitor Loaded");
+						setLoadingText("loading-ram", "RAM Monitor Loaded");
+						loaded[1] = 1;
+			  		}
+				});
 			}, refresh);
 		}
 	}

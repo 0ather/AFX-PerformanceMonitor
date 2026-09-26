@@ -73,11 +73,12 @@ var cpuMonitor = function(os, loaded) {
      * @param {number} refresh interval - default 2000
      */
 	this.cpuDisplay = function(type, textid, refresh) {
-		document.getElementById("loading-cpu").innerHTML = "Loading CPU Monitor...";
+		var cpuMonitorLoaded = 0;
+
+		setLoadingText("loading-cpu", "Loading CPU Monitor...");
 
 		if (type == "one-core") {
-			var cpuMonitorLoaded = 0,
-				percentageCPU = 0,
+			var percentageCPU = 0,
 				startMeasure = cpuAverage();
 
 			cpuMonitorGui.addRow(1);
@@ -106,7 +107,7 @@ var cpuMonitor = function(os, loaded) {
 
 		  			// change loaded value from 0 to 1
 		  			console.log("0 CPU Monitor Loaded");
-					document.getElementById("loading-cpu").innerHTML = "CPU Monitor Loaded";
+					setLoadingText("loading-cpu", "CPU Monitor Loaded");
 					loaded[0] = 1;
 		  		}
 			}, refresh);
@@ -143,7 +144,7 @@ var cpuMonitor = function(os, loaded) {
 
 		  			// change loaded value from 0 to 1
 		  			console.log("0 CPU Monitor Loaded");
-					document.getElementById("loading-cpu").innerHTML = "CPU Monitor Loaded";
+					setLoadingText("loading-cpu", "CPU Monitor Loaded");
 					loaded[0] = 1;
 		  		}
 	        }, refresh);
