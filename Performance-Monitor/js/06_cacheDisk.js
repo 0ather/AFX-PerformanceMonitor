@@ -7,7 +7,17 @@
 var diskCacheMonitor = function(loaded, csInterface) {
 	'use strict';
 
-	var diskCacheDisplayInterval;
+	var diskCacheDisplayInterval,
+		// Rescan the folder only when it changed, and not more often than this
+		MIN_SCAN_GAP	= 5000,
+		// Safety rescan (and re-read of the After Effects prefs) in case a change was missed
+		FULL_SCAN_GAP	= 60000,
+		needsScan		= true,
+		scanning		= false,
+		lastScan		= 0,
+		lastPrefsRead	= 0,
+		watcher			= null,
+		watchedPath		= null;
 
 	var hostEnvironment 	= JSON.parse(window.__adobe_cep__.getHostEnvironment()),
 		afxVersion			= hostEnvironment.appVersion.toString(),
@@ -62,12 +72,44 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	 */
 	function getDiskCachePrefs() {
 		//var csInterface = new CSInterface();
+		lastPrefsRead = Date.now();
+
 		csInterface.evalScript('app.preferences.getPrefAsString("Disk Cache Controls", "Folder 7");', function(result) {
 			diskCachePath = findCacheFolder(result+"/Adobe/After Effects");
+			needsScan = true;
+			watchCacheFolder();
 		});
 		csInterface.evalScript('app.preferences.getPrefAsString("Disk Cache Controls", "Max Size 3");', function(result) {
 			diskCacheSize = result;
+			needsScan = true;
 		});
+	}
+
+	/**
+	 * Watch the cache folder: any change inside it asks for a new measure
+	 * (the whole folder is only read again when something changed)
+	 */
+	function watchCacheFolder() {
+		if ( watcher && watchedPath === diskCachePath ) return;
+
+		stopWatching();
+
+		try {
+			watcher = require('fs').watch(diskCachePath, { recursive: true }, function() {
+				needsScan = true;
+			});
+			watchedPath = diskCachePath;
+			watcher.on('error', stopWatching);
+		} catch (e) {
+			// Folder doesn't exist yet - try again at the next safety rescan
+			watcher = null;
+		}
+	}
+
+	function stopWatching() {
+		if (watcher) watcher.close();
+		watcher = null;
+		watchedPath = null;
 	}
 
 	/**
@@ -80,10 +122,15 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	function getCacheUsage(diskCachePath, diskCacheSize, textid) {
 		var getCurrentCacheUsage = require('get-folder-size');
 
-		// Wait for the After Effects prefs (evalScript is asynchronous)
-		if ( !diskCachePath || !diskCacheSize ) return;
+		scanning = true;
 
 		getCurrentCacheUsage(diskCachePath, function(err, size) {
+			scanning = false;
+			lastScan = Date.now();
+
+			// Display may have been removed while reading the folder
+			if (!document.getElementById(textid)) return;
+
 			if (err) {
 				// Folder not found (cache empty or not created yet)
 				console.log("Disk cache folder not found: " + diskCachePath);
@@ -119,17 +166,23 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	 * Manual cache purge
 	 */
 	function manualPurge() {
-		csInterface.evalScript("app.executeCommand(10200)");
+		csInterface.evalScript("app.executeCommand(10200)", function() {
+			// Show the new size right away
+			needsScan = true;
+			lastScan = 0;
+		});
 	}
 
 	/**
 	 * Display
 	 *
 	 * @param {string} span id for the feedback text (usage)
-     * @param {number} refresh interval - default 2000
+     * @param {number} refresh interval - not used, the folder is measured only when it changes
 	 */
 	this.diskCacheDisplay = function(textid, refresh) {
 		cacheMonitorLoaded = 0;
+		needsScan = true;
+		lastScan = 0;
 
 		setLoadingText("loading-cache", "Loading Disk Cache Monitor...");
 
@@ -142,10 +195,23 @@ var diskCacheMonitor = function(loaded, csInterface) {
 			manualPurge();
 		});
 
-		// Interval for current cache usage
+		// Cheap check every second - the folder is only read when needed
 		diskCacheDisplayInterval = setInterval(function() {
-			getCacheUsage(diskCachePath, diskCacheSize, textid);
-		}, refresh);
+			var now = Date.now();
+
+			// Safety: re-read the prefs (the user may have changed the cache folder) and measure again
+			if ( now - lastPrefsRead >= FULL_SCAN_GAP ) {
+				getDiskCachePrefs();
+			}
+
+			// Wait for the After Effects prefs (evalScript is asynchronous)
+			if ( !diskCachePath || !diskCacheSize ) return;
+
+			if ( needsScan && !scanning && now - lastScan >= MIN_SCAN_GAP ) {
+				needsScan = false;
+				getCacheUsage(diskCachePath, diskCacheSize, textid);
+			}
+		}, 1000);
 	}
 
 	/**
@@ -154,5 +220,6 @@ var diskCacheMonitor = function(loaded, csInterface) {
 	this.diskCacheUndisplay = function() {
 		diskCacheMonitorGui.removeRow();
 		clearInterval(diskCacheDisplayInterval);
+		stopWatching();
 	}
 }

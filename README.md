@@ -26,6 +26,9 @@ In Anastasiy’s Extension Manager, click File -> Install Extension and choose t
 
 ### Unreleased
 
+- Much lighter VRAM monitor on Windows: the GPU is detected once, then read by a single background process (nvidia-smi for NVIDIA, Windows GPU counters for other cards) instead of 7 PowerShell commands at every refresh.
+- Much lighter disk cache monitor: the cache folder is only measured again when something changes inside it.
+- Faster bar drawing: only the blocks that change are updated.
 - Works with After Effects versions newer than 23.9.
 - Update check now correctly detects new versions.
 - Disk cache usage now finds the cache folder on recent After Effects versions.

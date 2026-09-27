@@ -28,7 +28,12 @@ function setLoadingText(id, text) {
  		_container	= container,
  		_groupname 	= groupname,
  		_stepsname	= stepsname,
- 		_spacesteps	= spacesteps;
+ 		_spacesteps	= spacesteps,
+ 		_self		= this,
+ 		// Step elements of each bar, found once when the bar is built - _bars[bar][step]
+ 		_bars		= [],
+ 		// Number of enabled steps of each bar, to only update what changed
+ 		_enabled	= [];
 
  	_loaded.push(0);
 
@@ -45,9 +50,19 @@ function setLoadingText(id, text) {
  	 		$(_container).append('<'+_groupname+' id="'+_groupname+i+'"></'+_groupname+'>');
 
  	 		// Add step element (bars) - <step class="step-disabled"></step>
+ 	 		var bar = document.getElementById(_groupname+i),
+ 	 			steps = [];
+
  	 		for ( var j = 0; j < 20; j++ ) {
-				$('#'+_groupname+i).append('<step class="step-disabled"></step>');
+				var step = document.createElement(_stepsname);
+
+				step.className = "step-disabled";
+				bar.appendChild(step);
+				steps.push(step);
 			}
+
+			_bars.push(steps);
+			_enabled.push(0);
  	 	}
  	}
 
@@ -67,6 +82,8 @@ function setLoadingText(id, text) {
  	 */
  	this.removeRow = function() {
  		$(_container).empty();
+ 		_bars		= [];
+ 		_enabled	= [];
  	}
 
  	/**
@@ -79,70 +96,48 @@ function setLoadingText(id, text) {
  	}
 
  	/**
-	 * GUI step bars size
-	 * 
-	 * @param {number} number of cpus in computer
+	 * GUI step bars size - resize the steps of every bar to fill the bar width
 	 */
-	this.StepSize = function(numberCPUS) {
-		if ( numberCPUS == undefined ) {
-			var graphWidth 				= document.getElementsByTagName(_groupname)[0].offsetWidth,
-				numberSteps 			= document.getElementsByTagName(_groupname)[0].getElementsByTagName(_stepsname).length,
-				tempStepsWidth			= graphWidth / numberSteps,
-				tempFullSpaceSteps		= _spacesteps * (numberSteps - 1),
-				tempStepsSizeCorrection	= tempFullSpaceSteps / numberSteps,
-				stepsWidth				= tempStepsWidth - tempStepsSizeCorrection;
+	this.StepSize = function() {
+		for (var i = 0; i < _bars.length; i++) {
+			var steps		= _bars[i],
+				graphWidth	= steps[0].parentNode.offsetWidth,
+				stepsWidth	= ( graphWidth - _spacesteps * (steps.length - 1) ) / steps.length;
 
-			for (var i = 0; i < numberSteps; i++) {
-				document.getElementsByTagName(_groupname)[0].getElementsByTagName(_stepsname)[i].style.width = stepsWidth +"px";
-			}
-		} else {
-			for (var i = 0; i < numberCPUS; i++) {
-				var graphWidth 				= document.getElementsByTagName(_groupname)[i].offsetWidth,
-					numberSteps 			= document.getElementsByTagName(_groupname)[i].getElementsByTagName(_stepsname).length,
-					tempStepsWidth			= graphWidth / numberSteps,
-					tempFullSpaceSteps		= _spacesteps * (numberSteps - 1),
-					tempStepsSizeCorrection	= tempFullSpaceSteps / numberSteps,
-					stepsWidth				= tempStepsWidth - tempStepsSizeCorrection;
-
-				for (var j = 0; j < numberSteps; j++) {
-					document.getElementsByTagName(_groupname)[i].getElementsByTagName(_stepsname)[j].style.width = stepsWidth +"px";
-				}
+			for (var j = 0; j < steps.length; j++) {
+				steps[j].style.width = stepsWidth + "px";
 			}
 		}
 	}
 
+	// One resize listener for all the bars of this group
+	window.addEventListener('resize', function() { _self.StepSize(); });
+
 	/**
-	 * GUI step bars color
+	 * GUI step bars color - only the steps that changed are updated
 	 * 
-	 * @param {number} usage of cpu(s) in percent
-	 * @param {number} value of loop for multiple cpus display
+	 * @param {number} usage in percent
+	 * @param {number} bar number, from 1 (default 1)
 	 */
-	this.StepColor = function(percentageCPU, j) {
-		if ( j == undefined ) {
-			var numberSteps = document.getElementsByTagName(_groupname)[0].getElementsByTagName(_stepsname).length,
-				percentPerStep = 100 / numberSteps;
+	this.StepColor = function(percentage, j) {
+		var index	= (j == undefined) ? 0 : j-1,
+			steps	= _bars[index];
 
-			for ( var i = 1; i < numberSteps+1; i++ ) {
+		if (!steps || isNaN(percentage)) return;
 
-				if ( percentageCPU < (percentPerStep * i) ) {
-					$(_groupname+" "+_stepsname+":nth-child("+i+")").removeClass("step-enabled").addClass("step-disabled");
-				} else {
-					$(_groupname+" "+_stepsname+":nth-child("+i+")").removeClass("step-disabled").addClass("step-enabled");
-				}
-			}
+		var percentPerStep	= 100 / steps.length,
+			// Step i (from 1) is enabled if percentage >= percentPerStep * i
+			enabled			= Math.max(0, Math.min(steps.length, Math.floor(percentage / percentPerStep))),
+			previous		= _enabled[index],
+			k;
+
+		if (enabled > previous) {
+			for (k = previous; k < enabled; k++) steps[k].className = "step-enabled";
 		} else {
-			var numberSteps = document.getElementsByTagName(_groupname)[j-1].getElementsByTagName(_stepsname).length,
-				percentPerStep = 100 / numberSteps;
-
-			for ( var i = 1; i < numberSteps+1; i++ ) {
-
-				if ( percentageCPU < (percentPerStep * i) ) {
-					$('#'+_groupname+j+" "+_stepsname+":nth-child("+i+")").removeClass("step-enabled").addClass("step-disabled");
-				} else {
-					$('#'+_groupname+j+" "+_stepsname+":nth-child("+i+")").removeClass("step-disabled").addClass("step-enabled");
-				}
-			}
+			for (k = enabled; k < previous; k++) steps[k].className = "step-disabled";
 		}
+
+		_enabled[index] = enabled;
 	}
 
 	/**

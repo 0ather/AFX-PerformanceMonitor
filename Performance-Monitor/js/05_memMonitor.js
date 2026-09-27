@@ -64,7 +64,6 @@
 		memMonitorGui.addRow(1);
 
 		memMonitorGui.StepSize();
-		window.addEventListener('resize', function() { memMonitorGui.StepSize(); });
 
 		if ( os.type().indexOf("Windows") > -1 ) {
 			// Windows

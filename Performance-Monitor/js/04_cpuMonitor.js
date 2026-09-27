@@ -85,7 +85,6 @@ var cpuMonitor = function(os, loaded) {
 
 			cpuMonitorGui.StepSize();
 
-			window.addEventListener('resize', function() { cpuMonitorGui.StepSize(); });
 
 	        cpuDisplayInterval = setInterval(function() {
 	            var endMeasure = cpuAverage();
@@ -120,9 +119,8 @@ var cpuMonitor = function(os, loaded) {
 
 	        cpuMonitorGui.addRow(startMeasure.cpusNumber);
 
-			cpuMonitorGui.StepSize(startMeasure.cpusNumber);
+			cpuMonitorGui.StepSize();
 
-			window.addEventListener('resize', function() { cpuMonitorGui.StepSize(startMeasure.cpusNumber); });
 
 	        cpuDisplayInterval = setInterval(function() {
 	            var endMeasure = cpuMultiAverage();
