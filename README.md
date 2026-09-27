@@ -1,6 +1,6 @@
 # Performance Monitor (v1.2.1) for After Effects
 
-This extension for After Effects (CC 2014 - CC 2023) allows you to always have a look to your CPU, Memory and VRAM usage without opening any task manager. You can also check your current disk cache usage as an option, as well as purge all memory and disk cache by left clicking on it.
+This extension for After Effects (CC 2014 and later) allows you to always have a look to your CPU, Memory and VRAM usage without opening any task manager. You can also check your current disk cache usage as an option, as well as purge all memory and disk cache by left clicking on it.
 
 ![Preview](https://i.imgur.com/aCGtXpd.png)
 
@@ -13,7 +13,7 @@ Alternatively, you can use [Anastasiy’s Extension Manager](https://install.ana
 
 2. Install ZXP Installer or Anastasiy’s Extension Manager on your computer.
 
-3. [Download the extension](https://github.com/0ather/AFX-CpuRamMonitor/raw/master/Build/Performance-Monitor_1.2.1.zxp) (.ZXP File).
+3. [Download the extension](https://github.com/0ather/AFX-PerformanceMonitor/raw/master/Build/Performance-Monitor_1.2.1.zxp) (.ZXP File).
 
 4. In ZXP Installer, click File -> Open... and choose the .ZXP file you just downloaded.
 In Anastasiy’s Extension Manager, click File -> Install Extension and choose the .ZXP file you just downloaded.
@@ -23,6 +23,17 @@ In Anastasiy’s Extension Manager, click File -> Install Extension and choose t
 
 
 ## Updates (what is new)
+
+### Unreleased
+
+- Works with After Effects versions newer than 23.9.
+- Update check now correctly detects new versions.
+- Disk cache usage now finds the cache folder on recent After Effects versions.
+- VRAM monitor no longer piles up timers, and says "unavailable" when the GPU doesn't report its memory.
+- Mac memory monitor now waits for the system instead of fixed delays, and works across macOS versions.
+- Changing a setting after the panel has loaded no longer breaks the CPU / RAM / VRAM bars.
+- The panel no longer stays stuck on "Loading..." when "Show all cores" is saved.
+- Disk cache sizes are shown in GB / MB.
 
 ### 1.2.1
 

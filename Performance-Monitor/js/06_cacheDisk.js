@@ -95,9 +95,9 @@ var diskCacheMonitor = function(loaded, csInterface) {
 				percentage 	= sizeGB/diskCacheSize*100;
 
 			if (sizeGB > 1) {
-				document.getElementById(textid).innerHTML = "Disk Cache usage: "+(sizeGB.toFixed(2))+"Go / "+diskCacheSize+"Go";
+				document.getElementById(textid).innerHTML = "Disk Cache usage: "+(sizeGB.toFixed(2))+"GB / "+diskCacheSize+"GB";
 			} else {
-				document.getElementById(textid).innerHTML = "Disk Cache usage: "+(sizeMb.toFixed(2))+"Mb / "+diskCacheSize+"Go";
+				document.getElementById(textid).innerHTML = "Disk Cache usage: "+(sizeMb.toFixed(2))+"MB / "+diskCacheSize+"GB";
 			}
 
 			diskCacheMonitorGui.StepSimpleColor(percentage);
